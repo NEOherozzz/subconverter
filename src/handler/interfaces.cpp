@@ -340,6 +340,7 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS) {
         "filename"), argUpdateInterval = getUrlArg(
         argument, "interval"), argUpdateStrict = getUrlArg(argument, "strict");
     std::string argRenames = getUrlArg(argument, "rename"), argFilterScript = getUrlArg(argument, "filter_script");
+    std::string argDiyUA = getUrlArg(argument, "diyua");
 
     /// switches with default value
     tribool argUpload = getUrlArg(argument, "upload"), argEmoji = getUrlArg(argument, "emoji"), argAddEmoji = getUrlArg(
@@ -566,6 +567,8 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS) {
     parse_set.time_rules = &time_temp;
     parse_set.sub_info = &subInfo;
     parse_set.authorized = authorized;
+    if (!argDiyUA.empty())
+        request.headers["User-Agent"] = argDiyUA;
     parse_set.request_header = &request.headers;
     parse_set.js_runtime = ext.js_runtime;
     parse_set.js_context = ext.js_context;
@@ -1026,6 +1029,9 @@ std::string surgeConfToClash(RESPONSE_CALLBACK_ARGS) {
     parse_set.proxy = &proxy;
     parse_set.exclude_remarks = parse_set.include_remarks = &dummy_str_array;
     parse_set.stream_rules = parse_set.time_rules = &dummy_regex_array;
+    std::string argDiyUA = getUrlArg(request.argument, "diyua");
+    if (!argDiyUA.empty())
+        request.headers["User-Agent"] = argDiyUA;
     parse_set.request_header = &request.headers;
     parse_set.sub_info = &subInfo;
     parse_set.authorized = !global.APIMode;
